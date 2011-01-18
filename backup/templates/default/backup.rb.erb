@@ -76,12 +76,12 @@
 
 # Initialize with:
 #  sudo backup --run mysql-backup-s3
-backup "mysql-backup-s3" %> do
+backup "mysql-backup-s3" do
 
   adapter    <%= node[:backup][:database][:adapter].to_sym %> do
     user       <%= node[:backup][:database][:user] %>
     password   <%= node[:backup][:database][:password] %>
-    database   <%= node[:backup][:database][:name]
+    database   <%= node[:backup][:database][:name] %>
 
     additional_options '--single-transaction'
   end
@@ -89,7 +89,7 @@ backup "mysql-backup-s3" %> do
   storage :s3 do
     access_key_id     <%= node[:backup][:amazon][:access_key] %>
     secret_access_key <%= node[:backup][:amazon][:secret_access_key] %>
-    bucket            <%= node[:backup][:amazon][:bucket]
+    bucket            <%= node[:backup][:amazon][:bucket] %>
     use_ssl           true
   end
 
@@ -103,7 +103,7 @@ end
 # Initialize with:
 #  sudo backup --run file-backup-s3
 backup "file-backup-s3" do
-  adapter :archove do
+  adapter :archive do
     file_root = <%= node[:backup][:file_root] %>
 
     files "#{file_root}/public/system"
