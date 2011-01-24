@@ -1,13 +1,8 @@
 default[:backup]                              = {}
 default[:backup][:config_file]                = "/opt/backup/config/backup.rb"
-default[:backup][:file_root]                  = "/var/www/app_root"
 default[:backup][:amazon][:access_key]        = "123456789"
 default[:backup][:amazon][:secret_access_key] = "1234567890123456789"
 default[:backup][:amazon][:bucket]            = "/bucket/bucket_name"
-default[:backup][:database][:adapter]         = "mysql"
-default[:backup][:databse][:name]             = "database_name"
-default[:backup][:database][:user]            = "user"
-default[:backup][:database][:password]        = "secret"
 default[:backup][:database][:cron][:hour]     = "1"
 default[:backup][:database][:cron][:minute]   = "0"
 default[:backup][:database][:keep_backups]    = "10"
