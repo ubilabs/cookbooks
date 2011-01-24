@@ -78,10 +78,10 @@
 #  sudo backup --run mysql-backup-s3
 backup "mysql-backup-s3" do
 
-  adapter    <%= node[:deploy][:quest_city][:database][:adapter].to_sym %> do
-    user       <%= node[:deploy][:quest_city][:database][:username] %>
-    password   <%= node[:deploy][:quest_city][:database][:password] %>
-    database   <%= node[:deploy][:quest_city][:database][:database] %>
+  adapter :mysql do
+    user       <%= node[:mysql][:username] %>
+    password   <%= node[:mysql][:password] %>
+    database   <%= node[:mysql][:database] %>
 
     additional_options '--single-transaction'
   end
