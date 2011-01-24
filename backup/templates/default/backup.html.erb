@@ -78,10 +78,10 @@
 #  sudo backup --run mysql-backup-s3
 backup "mysql-backup-s3" do
 
-  adapter    <%= node[:backup][:database][:adapter].to_sym %> do
-    user       <%= node[:backup][:database][:user] %>
-    password   <%= node[:backup][:database][:password] %>
-    database   <%= node[:backup][:database][:name] %>
+  adapter    <%= node[:deploy][:quest_city][:database][:adapter].to_sym %> do
+    user       <%= node[:deploy][:quest_city][:database][:username] %>
+    password   <%= node[:deploy][:quest_city][:database][:password] %>
+    database   <%= node[:deploy][:quest_city][:database][:database] %>
 
     additional_options '--single-transaction'
   end
@@ -93,7 +93,7 @@ backup "mysql-backup-s3" do
     use_ssl           true
   end
 
-  keep_backups <%= node[:backup][:keep_backups].to_i %>
+  keep_backups <%= node[:backup][:database][:keep_backups].to_i %>
   #encrypt_with_password 'password'
   notify false
 
@@ -104,11 +104,12 @@ end
 #  sudo backup --run file-backup-s3
 backup "file-backup-s3" do
   adapter :archive do
-    file_root = <%= node[:backup][:file_root] %>
+    file_root = <%= node[:deploy][:deploy_to] %>
 
     files "#{file_root}/public/system"
 
     # backup more than one file with:
     # files ["path_to_files", "another_path_to_files"]
+    keep_backups <%= node[:backup][:files][:keep_backups].to_i %>
   end
 end
