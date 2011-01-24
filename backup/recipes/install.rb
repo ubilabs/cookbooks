@@ -16,7 +16,7 @@ end
 
 # copy our config file to backup config dir
 template node[:backup][:config_file] do
-  source "backup.rb.erb"
+  source "backup.html.erb"
 end
 
 
