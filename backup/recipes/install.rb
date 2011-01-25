@@ -18,6 +18,6 @@ end
 cron "astrails-safe #{node[:backup][:config_file]}" do
   hour node[:backup][:cron][:hour]
   minute node[:backup][:cron][:minute]
-  user "deploy"
+  user "root"
   command "astrails-safe #{node[:backup][:config_file]}"
 end
