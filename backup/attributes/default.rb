@@ -1,4 +1,5 @@
 default[:backup]                              = {}
+default[:backup][:database]                   = "db_name"
 default[:backup][:config_file]                = "/opt/backup/config/backup.rb"
 default[:backup][:amazon][:access_key]        = "123456789"
 default[:backup][:amazon][:secret_access_key] = "1234567890123456789"

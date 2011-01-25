@@ -17,11 +17,11 @@ safe do
   mysqldump do
     options "-ceKq --single-transaction --create-options"
 
-    user <%= node[:mysql][:username] %>
-    password <%= node[:mysql][:password] %>
+    user "root"
+    password <%= node[:mysql][:server_root_password] %>
     #socket "/var/run/mysqld/mysqld.sock"
 
-    database <%= node[:mysql][:database].to_sym %>
+    database <%= node[:backup][:database].to_sym %>
   end
 
   tar do
