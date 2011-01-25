@@ -1,0 +1,16 @@
+<% if File.exists?("#{node[:passenger_ruby19][:path_to_lib]}/ruby/gems/1.9.1/gems/passenger-#{node[:passenger_ruby19][:version]}/ext/apache2/mod_passenger.so") %>
+
+PassengerRoot <%= node[:passenger_ruby19][:path_to_lib] %>/ruby/gems/1.9.1/gems/passenger-<%= node[:passenger_ruby19][:version] %>
+PassengerRuby <%= node[:passenger_ruby19][:path_to_ruby] %>
+
+PassengerMaxPoolSize <%= node[:rails][:max_pool_size] ? node[:rails][:max_pool_size] : node[:passenger][:max_pool_size]%>
+PassengerStatThrottleRate <%= node[:passenger][:stat_throttle_rate] %>
+RailsFrameworkSpawnerIdleTime <%= node[:passenger][:rails_framework_spawner_idle_time] %>
+RailsAppSpawnerIdleTime <%= node[:passenger][:rails_app_spawner_idle_time] %>
+PassengerPoolIdleTime <%= node[:passenger][:pool_idle_time] %>
+PassengerMaxInstancesPerApp <%= node[:passenger][:max_instances_per_app] %>
+PassengerMaxRequests <%= node[:passenger][:max_requests] %>
+PassengerHighPerformance <%= node[:passenger][:high_performance_mode] %>
+RailsSpawnMethod <%= node[:passenger][:rails_spawn_method] %>
+
+<% end %>
