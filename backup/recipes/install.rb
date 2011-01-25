@@ -1,13 +1,6 @@
 # install the gems for backup
-gem_package "backup" do
+gem_package "astrails-safe" do
   action :install
-  ignore_failure true
-end
-
-# bootstrap the backup gem
-execute "backup --setup" do
-  command "backup --setup"
-  action :run
 end
 
 # delete generated config file
@@ -22,18 +15,9 @@ end
 
 
 # create cron for mysql-backup task
-cron "backup --run mysql-backup-s3" do
-  hour node[:backup][:database][:cron][:hour]
-  minute node[:backup][:database][:cron][:minute]
-  user "root"
-  command "backup --run mysql-backup-s3"
+cron "astrails-safe #{node[:backup][:config_file]}" do
+  hour node[:backup][:cron][:hour]
+  minute node[:backup][:cron][:minute]
+  user "deploy"
+  command "astrails-safe #{node[:backup][:config_file]}"
 end
-
-# create cron for file-backup-task
-cron "backup --run file-backup-s3" do
-  hour node[:backup][:files][:cron][:hour]
-  minute node[:backup][:files][:cron][:minute]
-  user "root"
-  command "backup --run file-backup-s3"
-end
-
