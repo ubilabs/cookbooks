@@ -1,6 +1,7 @@
 # install the gems for backup
 gem_package "backup" do
   action :install
+  ignore_failure true
 end
 
 # bootstrap the backup gem
