@@ -15,9 +15,8 @@ end
 
 
 # create cron for mysql-backup task
-cron "astrails-safe #{node[:backup][:config_file]}" do
-  hour node[:backup][:cron][:hour]
-  minute node[:backup][:cron][:minute]
-  user "root"
+cron "astrails-safe db and file backup" do
+  hour node[:backup][:cron][:hour].to_s
+  minute node[:backup][:cron][:minute].to_s
   command "astrails-safe #{node[:backup][:config_file]}"
 end
