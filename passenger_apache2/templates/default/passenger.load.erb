@@ -1,3 +1,0 @@
-<% if File.exists?("#{node[:passenger_ruby19][:path_to_lib]}/ruby/gems/1.9.1/gems/passenger-#{node[:passenger_ruby19][:version]}/ext/apache2/mod_passenger.so") %>
-LoadModule passenger_module <%= node[:passenger_ruby19][:path_to_lib] %>/ruby/gems/1.9.1/gems/passenger-<%= node[:passenger_ruby19][:version] %>/ext/apache2/mod_passenger.so
-<% end %>
