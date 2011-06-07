@@ -1,0 +1,132 @@
+#!/bin/sh -e
+
+### BEGIN INIT INFO
+# Provides:          bigtuna
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: BigTuna CI init script.
+# Description:       BigTuna CI init script.
+### END INIT INFO
+
+SCRIPT_OK=0
+SCRIPT_ERROR=1
+
+DESCRIPTION="bigtuna continuous integration server"
+SCRIPT_NAME=`basename $0`
+NAME=bigtuna
+RVM_SCRIPT=<%= node[:rvm][:install_dir] %>/scripts/rvm
+BIGTUNA_USER=<%= node[:bigtuna][:user] %>
+BIGTUNA=<%= node[:bigtuna][:deploy_dir] %>/script/rails
+DEPLOY_DIR=<%= node[:bigtuna][:deploy_dir] %>
+RUN_DIR=<%= node[:bigtuna][:run_dir] %>
+PORT=<%= node[:bigtuna][:production_port] %>
+SECURE_PORT=<%= node[:bigtuna][:secure_production_port] %>
+PRODUCTION_PID=$RUN_DIR/production.pid
+SECURE_PRODUCTION_PID=$RUN_DIR/secure_production.pid
+
+# Grace time in seconds to give the beam process to stop when we're running the
+# stop target. Will end before grace time ends if the process ends sooner.
+STOP_GRACE_TIME=5
+
+if test ! -x $BIGTUNA; then
+    exit $SCRIPT_OK
+fi
+
+log_daemon_msg () {
+    # Dummy function to be replaced by LSB library.
+
+    echo $@
+}
+
+log_end_msg () {
+    # Dummy function to be replaced by LSB library.
+
+    if test "$1" != "0"; then
+      echo "Error with $DESCRIPTION: $NAME"
+    fi
+    return $1
+}
+
+start_bigtuna () {
+    # Start BigTuna as a background process.
+
+    cd $DEPLOY_DIR
+    command_1="$BIGTUNA s -e production -d -p $PORT -P $PRODUCTION_PID"
+    command_2="$BIGTUNA s -e secure_production -d -p $SECURE_PORT -P $SECURE_PRODUCTION_PID"
+    if su $BIGTUNA_USER -c "source $RVM_SCRIPT && $command_1 && $command_2" > /dev/null; then
+        return $SCRIPT_OK
+    else
+        return $SCRIPT_ERROR
+    fi
+}
+
+stop_bigtuna () {
+    # stop the running bigtuna process.
+
+    if [ ! -r "$PRODUCTION_PID" ] || [ ! -r "$SECURE_PRODUCTION_PID" ]
+    then
+        # exists, but can't read it
+        [ -f "$PRODUCTION_PID" ] || [ -f "$SECURE_PRODUCTION_PID" ] && return $SCRIPT_ERROR
+
+        # doesn't exist, so assume bigtuna is already stopped
+        return $SCRIPT_OK
+    fi
+
+    pid_1=`cat $PRODUCTION_PID`
+    pid_2=`cat $SECURE_PRODUCTION_PID`
+    # unset $pid_1 and $pid_2
+    [ -z "$pid_1" ] && [ -z "$pid_2" ] && return $SCRIPT_OK
+
+    command="kill -9 $pid_1 $pid_2"
+
+    if ! su $BIGTUNA_USER -c "$command" > /dev/null; then
+        return $SCRIPT_ERROR
+    fi
+
+    return $SCRIPT_OK
+}
+
+parse_script_option_list () {
+    # Parse arguments passed to the script and take appropriate action.
+
+    case "$1" in
+        start)
+            log_daemon_msg "Starting $DESCRIPTION" $NAME
+            if start_bigtuna; then
+                log_end_msg $SCRIPT_OK
+            else
+                log_end_msg $SCRIPT_ERROR
+            fi
+            ;;
+        stop)
+            log_daemon_msg "Stopping $DESCRIPTION" $NAME
+            if stop_bigtuna; then
+                log_end_msg $SCRIPT_OK
+            else
+                log_end_msg $SCRIPT_ERROR
+            fi
+            ;;
+        restart|force-reload)
+            log_daemon_msg "Restarting $DESCRIPTION" $NAME
+            if stop_bigtuna; then
+                if start_bigtuna; then
+                    log_end_msg $SCRIPT_OK
+                else
+                    log_end_msg $SCRIPT_ERROR
+                fi
+            else
+                log_end_msg $SCRIPT_ERROR
+            fi
+            ;;
+        *)
+            cat << EOF >&2
+Usage: $SCRIPT_NAME {start|stop|restart|force-reload}
+EOF
+            exit $SCRIPT_ERROR
+            ;;
+    esac
+}
+
+parse_script_option_list $@
