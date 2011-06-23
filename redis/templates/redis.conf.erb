@@ -1,0 +1,13 @@
+daemonize yes
+port 6379
+bind 0.0.0.0
+timeout 300
+loglevel notice
+
+save 900 1
+save 300 10
+save 60 10000
+
+rdbcompression yes
+dir node[:redis][:datadir] 
+appendfsync always
