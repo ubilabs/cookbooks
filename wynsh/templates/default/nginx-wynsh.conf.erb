@@ -1,0 +1,42 @@
+user www-data;
+worker_processes 2;
+
+error_log /var/log/nginx/error.log;
+pid       /var/run/nginx.pid;
+
+events {
+    worker_connections 2048;
+}
+
+http {
+    include    /etc/nginx/mime.types;
+    access_log /var/log/nginx/access.log;
+
+    server {
+        listen 80;
+
+        server_name <%= node[:default][:hostname] %>;
+        client_max_body_size 8M;
+        root <%= node[:deploy][:deploy_to] %>/current/public;
+        try_files $uri $uri/ $uri/index.html $uri.html @unicorn;
+        location @unicorn {
+            proxy_pass http://unicorn;
+        }
+    }
+
+upstream unicorn {
+    <% node[:unicorn][:worker_processes].times do |w| %>
+        listen "/tmp/unicorn.<%= w %>.sock"
+    <% end %>
+    <% node[:unicorn][:worker_processes].times do |w| %>
+        listen "127.0.0.1:<%= node[:unicorn][:base_port]+w %>"
+    <% end %>
+}
+
+    sendfile on;
+    tcp_nopush on;
+    gzip on;
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+
+                                                                                                    }
+
