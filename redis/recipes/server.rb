@@ -10,7 +10,7 @@ end
 
 service "redis-server" do
   service_name "redis-server"
-  supports :status => false, :restart => true, :stop => true, :force-reload => true
+  supports :status => false, :restart => true, :stop => true, "force-reload" => true
   action :enable
 end
 
