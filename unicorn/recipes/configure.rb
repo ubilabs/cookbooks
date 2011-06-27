@@ -1,4 +1,4 @@
-template "#{node[:unicorn][:config]}" do
+template "#{release_path}/config/unicorn.rb" do
   source "unicorn.rb.erb"
   owner "root"
   group "root"
