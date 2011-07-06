@@ -14,16 +14,17 @@ safe do
     s3 <%= node[:backup][:keep_backups] %>
   end
 
-  # TODO: set mysql dump for all apps in node[:deploy][app_name]
-  mysqldump do
-    options "-ceKq --single-transaction --create-options"
+  node[:deploy].each do |app|
+    mysqldump do
+      options "-ceKq --single-transaction --create-options"
 
-    user "<%= node[:backup][:database_user] %>"
-    password "<%= node[:mysql][:server_root_password] %>"
+      user "<%= node[:backup][:database_user] %>"
+      password "<%= node[:mysql][:server_root_password] %>"
 
-    host "<%= node[:deploy][app_name][:database][:host] %>"
+      host "<%= node[:deploy][app][:database][:host] %>"
 
-    database <%= node[:backup][:database].to_sym %>
+      database <%= node[:backup][:database].to_sym %>
+    end
   end
 
 end
