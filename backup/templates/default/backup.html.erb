@@ -14,14 +14,16 @@ safe do
     s3 <%= node[:backup][:keep_backups] %>
   end
 
-  node[:deploy].each do |app|
+  node[:deploy].each do |application, deploy|
+    deploy = node[:deploy][application]
+
     mysqldump do
       options "-ceKq --single-transaction --create-options"
 
       user "<%= node[:backup][:database_user] %>"
       password "<%= node[:mysql][:server_root_password] %>"
 
-      host "<%= node[:deploy][app][:database][:host] %>"
+      host "<%= deploy[:database][:host] %>"
 
       database <%= node[:backup][:database].to_sym %>
     end
