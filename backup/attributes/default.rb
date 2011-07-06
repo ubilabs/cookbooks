@@ -1,4 +1,5 @@
 default[:backup]                              = {}
+default[:backup][:app]                        = "app_name"
 default[:backup][:database]                   = "db_name"
 default[:backup][:database_user]              = "root"
 default[:backup][:config_file]                = "/opt/backup/config/backup.rb"
