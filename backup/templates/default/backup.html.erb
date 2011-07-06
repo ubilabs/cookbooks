@@ -3,9 +3,9 @@ safe do
   local :path => "/backup/:kind/:id"
 
   s3 do
-    key <%= node[:backup][:amazon][:access_key] %>
-    secret <%= node[:backup][:amazon][:secret_access_key] %>
-    bucket <%= node[:backup][:amazon][:bucket] %>
+    key "<%= node[:backup][:amazon][:access_key] %>"
+    secret "<%= node[:backup][:amazon][:secret_access_key] %>"
+    bucket "<%= node[:backup][:amazon][:bucket] %>"
     path ":kind/:id"
   end
 
@@ -17,20 +17,10 @@ safe do
   mysqldump do
     options "-ceKq --single-transaction --create-options"
 
-    user "root"
-    password <%= node[:mysql][:server_root_password] %>
-    #socket "/var/run/mysqld/mysqld.sock"
+    user "<%= node[:backup][:database_user] %>"
+    password "<%= node[:mysql][:server_root_password] %>"
 
     database <%= node[:backup][:database].to_sym %>
-  end
-
-  tar do
-    options "-h" # dereference symlinks
-
-    archive <%= node[:mysql][:database] %> do
-      files <%= node[:deploy][:deploy_to] %>
-    end
-
   end
 
 end
