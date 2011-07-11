@@ -11,7 +11,6 @@ template node[:backup][:config_file] do
   group "root"
 end
 
-
 # create cron for mysql-backup task
 cron "astrails-safe db and file backup" do
   hour node[:backup][:cron][:hour].to_s
