@@ -1,4 +1,5 @@
 include_recipe "rails"
+include_recipe "nginx::service"
 
 node[:deploy].each do |application, deploy|
 
@@ -20,4 +21,23 @@ node[:deploy].each do |application, deploy|
     deploy_data deploy
     app application
   end
+
+  template "#{node[:nginx][:dir]}/sites-available/#{application}" do
+    source "site.erb"
+    cookbook "nginx"
+    owner "root"
+    group "root"
+    mode 0644
+    variables :application => deploy
+
+    notifies :reload, resources(:service => "nginx")
+  end
+
+  # delete default virtual host
+  file "#{node[:nginx][:dir]}/sites-enabled/default" do
+    action :delete
+  end
+
+  nginx_site application
+
 end
