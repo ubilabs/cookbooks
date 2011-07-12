@@ -1,20 +1,15 @@
-
-events {
-    worker_connections 2048;
-}
-
 http {
-    server {
-        listen 80;
+  server {
+      listen 80;
 
-        server_name <%= node[:hostname] %>;
-        client_max_body_size 8M;
-        root <%= node[:deploy][:deploy_to] %>/current/public;
-        try_files $uri $uri/ $uri/index.html $uri.html @unicorn;
-        location @unicorn {
-            proxy_pass http://unicorn;
-        }
-    }
+      server_name <%= node[:hostname] %>;
+      client_max_body_size 8M;
+      root <%= node[:deploy][:deploy_to] %>/current/public;
+      try_files $uri $uri/ $uri/index.html $uri.html @unicorn;
+      location @unicorn {
+          proxy_pass http://unicorn;
+      }
+  }
 
   upstream unicorn {
     <% 4.times do |w| %>
@@ -25,9 +20,9 @@ http {
     <% end %>
   }
 
-    sendfile on;
-    tcp_nopush on;
-    gzip on;
-    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+  sendfile on;
+  tcp_nopush on;
+  gzip on;
+  gzip_disable "MSIE [1-6]\.(?!.*SV1)";
 
 }
