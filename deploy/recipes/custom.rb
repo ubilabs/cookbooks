@@ -2,6 +2,9 @@ include_recipe "rails"
 
 node[:deploy].each do |application, deploy|
 
+  Chef::Log.debug(application.inspect)
+  Chef::Log.debug(deploy.inspect)
+
   scalarium_deploy_dir do
     user deploy[:user]
     group deploy[:group]
