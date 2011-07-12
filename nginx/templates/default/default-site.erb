@@ -25,11 +25,11 @@ http {
     }
 
   upstream unicorn {
-    <% node[:unicorn][:worker_processes].times do |w| %>
+    <% 4.times do |w| %>
         listen "/tmp/unicorn.<%= w %>.sock"
     <% end %>
-    <% node[:unicorn][:worker_processes].times do |w| %>
-        listen "127.0.0.1:<%= node[:unicorn][:base_port]+w %>"
+    <% 4.times do |w| %>
+        listen "127.0.0.1:<%= 4000 + w %>"
     <% end %>
   }
 
