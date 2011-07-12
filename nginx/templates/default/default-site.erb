@@ -1,17 +1,9 @@
-user www-data;
-worker_processes 2;
-
-error_log /var/log/nginx/error.log;
-pid       /var/run/nginx.pid;
 
 events {
     worker_connections 2048;
 }
 
 http {
-    include    /etc/nginx/mime.types;
-    access_log /var/log/nginx/access.log;
-
     server {
         listen 80;
 
