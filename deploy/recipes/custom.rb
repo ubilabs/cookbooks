@@ -6,6 +6,10 @@ node[:deploy].each do |application, deploy|
   Chef::Log.debug(application.inspect)
   Chef::Log.debug(deploy.inspect)
 
+  scalarium_deploy_user do
+    deploy_data deploy
+  end
+
   scalarium_deploy_dir do
     user deploy[:user]
     group deploy[:group]
