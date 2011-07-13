@@ -44,4 +44,8 @@ node[:deploy].each do |application, deploy|
 
   nginx_site application
 
+  execute "monit reload" do
+    action :run
+  end
+
 end
