@@ -1,9 +1,9 @@
 maintainer "Ubilabs GmbH"
-maintainer_email "koelle@ubilabs.net"
-license "Commercial"
-description "configures unicorn workers"
+maintainer_email "mueller@ubilabs.net"
+license "Apache 2.0"
+description "configures unicorn init scripts"
 version "0.1"
-recipe "unicorn::configure", "Custom unicorn server config"
+recipe "unicorn", "Custom unicorn init config"
 
 supports "ubuntu"
 
