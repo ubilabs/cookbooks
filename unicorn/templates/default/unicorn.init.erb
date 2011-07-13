@@ -6,16 +6,16 @@
 # Required-Stop:     $local_fs $remote_fs $network $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: starts the unicorn web server for <%= application %>
-# Description:       starts unicorn for <%= application %>
+# Short-Description: starts the unicorn web server for <%= @application %>
+# Description:       starts unicorn for <%= @application %>
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON= cd <%= release_path %> && bundle exec unicorn_rails
-DAEMON_OPTS="-c <%= release_path %>/config/unicorn.rb -E <%= rails_env %> -D"
-NAME=unicorn_rails_<%= application %>
-DESC=unicorn_rails_<%= application %>
-PID=/tmp/pids/unicorn_<%= application %>.pid
+DAEMON= cd <%= @release_path %> && bundle exec unicorn_rails
+DAEMON_OPTS="-c <%= @release_path %>/config/unicorn.rb -E <%= @rails_env %> -D"
+NAME=unicorn_rails_<%= @application %>
+DESC=unicorn_rails_<%= @application %>
+PID=/tmp/pids/unicorn_<%= @application %>.pid
 
 case "$1" in
   start)
