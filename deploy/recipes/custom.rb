@@ -63,6 +63,15 @@ node[:deploy].each do |application, deploy|
 
   nginx_site application
 
+
+  bash "compress the assets" do
+    user "deploy"
+    code <<-EOH
+      cd #{deploy[:release_path]} && bundle exec rake sass:update &&  bundle exec rake jammit:after_deploy
+    EOH
+  end
+
+
   execute "monit reload" do
     action :run
   end
