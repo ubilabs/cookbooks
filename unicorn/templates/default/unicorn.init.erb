@@ -12,7 +12,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON= cd <%= @current_path %> && bundle exec unicorn_rails
-DAEMON_OPTS="-c <%= @current_path %>/config/unicorn.rb -E <%= @rails_env %> -D"
+DAEMON_OPTS="-c <%= @path %>/shared/config/unicorn.rb -E <%= @rails_env %> -D"
 NAME=unicorn_rails_<%= @application %>
 DESC=unicorn_rails_<%= @application %>
 PID=/tmp/pids/unicorn_<%= @application %>.pid

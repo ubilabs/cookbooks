@@ -27,7 +27,7 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  template "#{deploy[:deploy_to]}/config/unicorn.rb" do
+  template "#{deploy[:deploy_to]}/shared/config/unicorn.rb" do
     source "unicorn.rb.erb"
     owner "root"
     group "root"
