@@ -1,5 +1,6 @@
 include_recipe "rails"
 include_recipe "nginx::service"
+include_recipe "unicorn"
 
 node[:deploy].each do |application, deploy|
 
@@ -24,6 +25,24 @@ node[:deploy].each do |application, deploy|
   scalarium_deploy do
     deploy_data deploy
     app application
+  end
+
+  template "#{deploy[:release_path]}/config/unicorn.rb" do
+    source "unicorn.rb.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables(:application => application)
+
+    notifies :reload, resources(:service => "unicorn_#{application}")
+  end
+
+  template "/etc/monit/conf.d/unicorn_#{application}.monitrc" do
+    source "unicorn.monit.erb"
+    owner "root"
+    group "root"
+    mode "0644"
+    variables(:application => application)
   end
 
   template "#{node[:nginx][:dir]}/sites-available/#{application}" do

@@ -47,3 +47,4 @@ node[:deploy].each do |application, deploy|
   default[:deploy][application][:ssl_support] = false
 end
 
+default[:unicorn][:base_port] = 4000
