@@ -11,8 +11,8 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON= cd <%= deploy[:release_path] %> && bundle exec unicorn_rails
-DAEMON_OPTS="-c <%= deploy[:release_path] %>/config/unicorn.rb -E <%= deploy[:rails_env] %> -D"
+DAEMON= cd <%= release_path %> && bundle exec unicorn_rails
+DAEMON_OPTS="-c <%= release_path %>/config/unicorn.rb -E <%= rails_env %> -D"
 NAME=unicorn_rails_<%= application %>
 DESC=unicorn_rails_<%= application %>
 PID=/tmp/pids/unicorn_<%= application %>.pid
