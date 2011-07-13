@@ -9,7 +9,7 @@ node[:deploy].each do |application, deploy|
   end
 
   service "unicorn_#{application}" do
-    service_name "unicoen_#{application}"
+    service_name "unicorn_#{application}"
 
     supports :start => true, :reload => true, :stop => true, :restart => true
     action [:enable, :start]
