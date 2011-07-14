@@ -32,7 +32,7 @@ node[:deploy].each do |application, deploy|
     owner "root"
     group "root"
     mode "0644"
-    variables(:application => application)
+    variables(:application => application, :path => deploy[:deploy_to])
 
     notifies :reload, resources(:service => "unicorn_#{application}")
   end

@@ -6,9 +6,9 @@ worker_processes <%= unicorn_worker %>
   listen "127.0.0.1:<%= node[:unicorn][:base_port] + worker %>"
 <% end %>
 
-pid "/tmp/pids/unicorn_<%= @application %>.pid"
-stderr_path "/tmp/log/unicorn_<%= @application %>.stderr.log"
-stdout_path "/tmp/log/unicorn_<%= @application %>.stdout.log"
+pid "<%= @path %>/shared/pids/unicorn_<%= @application %>.pid"
+stderr_path "<%= @path %>/shared/log/unicorn_<%= @application %>.stderr.log"
+stdout_path "<%= @path %>/shared/log/unicorn_<%= @application %>.stdout.log"
 
 preload_app true
 GC.respond_to?(:copy_on_write_friendly=) and
