@@ -1,4 +1,4 @@
-<% unicorn_worker =  node[:nginx][:worker_processes].to_i * 2 %>
+<% unicorn_worker =  %x{grep -c processor /proc/cpuinfo}.strip.to_i * 2 %>
 worker_processes <%= unicorn_worker %>
 
 <% unicorn_worker.times do |worker| %>
