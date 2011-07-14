@@ -10,8 +10,7 @@
 # Description:       starts unicorn for <%= @application %>
 ### END INIT INFO
 
-DAEMON= cd <%= @current_path %> && bundle exec unicorn_rails
-DAEMON_OPTS="-c <%= @app_path %>/shared/config/unicorn.rb -E <%= @rails_env %> -D"
+<% options = "#{@app_path}/shared/config/unicorn.rb -E #{@rails_env} -D" %>
 NAME=unicorn_<%= @application %>
 DESC=unicorn_<%= @application %>
 PID=<%= @app_path %>/shared/pids/unicorn_<%= @application %>.pid
@@ -21,7 +20,7 @@ cd <%= @current_path %>
 case "$1" in
   start)
 	echo -n "Starting $DESC: "
-  bundle exec unicorn_rails -c $DEAMON_OPTS
+  bundle exec unicorn_rails -c <%= options %>
 	echo "$NAME."
 	;;
   stop)
@@ -33,7 +32,7 @@ case "$1" in
 	echo -n "Restarting $DESC: "
         kill -QUIT `cat $PID`
 	sleep 1
-  bundle exec unicorn_rails -c $DEAMON_OPTS
+  bundle exec unicorn_rails -c <%= options %>
 	echo "$NAME."
 	;;
   reload)
