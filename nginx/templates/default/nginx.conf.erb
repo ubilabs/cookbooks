@@ -1,5 +1,5 @@
 user <%= node[:nginx][:user] %>;
-worker_processes <%= node[:nginx][:worker_processes] %>;
+worker_processes <%= %x{grep -c processor /proc/cpuinfo}.strip.to_i %>;
 
 error_log  <%= node[:nginx][:log_dir] %>/error.log;
 pid        /var/run/nginx.pid;
@@ -36,7 +36,7 @@ http {
   include <%= node[:nginx][:dir] %>/sites-enabled/*;
 
   upstream unicorn {
-    <% unicorn_worker = node[:nginx][:worker_processes] * 2 %>
+    <% unicorn_worker = %x{grep -c processor /proc/cpuinfo}.strip.to_i * 2 %>
     <% unicorn_worker.times do |worker| %>
       server unix:/tmp/unicorn.<%= worker -%>.sock;
       server 127.0.0.1:<%= 4000 + worker -%>;
