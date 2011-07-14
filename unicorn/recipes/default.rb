@@ -16,7 +16,7 @@ node[:deploy].each do |application, deploy|
     service_name "unicorn_#{application}"
 
     supports :start => true, :reload => true, :stop => true, :restart => true
-    action [:enable, :start]
+    action [:enable]
   end
 
 
