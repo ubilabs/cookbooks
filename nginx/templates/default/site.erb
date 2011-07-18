@@ -17,6 +17,10 @@ server {
     }
   }
 
+  location ~ ^/assets/ {
+    expires max;
+  }
+
   # Block all svn access
   if ($request_uri ~* ^.*\.svn.*$) {
      return 404;
