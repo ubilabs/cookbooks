@@ -1,5 +1,10 @@
+service "nginx" do
+  status_command "echo 0 && /etc/init.d/nginx status"
+  action :nothing
+end
+
 include_recipe "rails"
-include_recipe "nginx::service"
+#include_recipe "nginx::service"
 include_recipe "unicorn"
 
 node[:deploy].each do |application, deploy|
