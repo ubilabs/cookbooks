@@ -3,3 +3,4 @@ Our Chef Cookbooks for our Scalarium Config
 
 NodeJs Cookbook from https://github.com/mdxp/cookbooks
 Build-Essential from https://github.com/opscode/cookbooks
+silverline-cookbook from https://github.com/librato/silverline-cookbook
