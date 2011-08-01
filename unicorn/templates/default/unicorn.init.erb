@@ -10,7 +10,7 @@
 # Description:       starts unicorn for <%= @application %>
 ### END INIT INFO
 
-export SL_NAME=unicorn_rails
+export SL_NAME=unicorn
 <% options = "#{@app_path}/shared/config/unicorn.rb -E #{@rails_env} -D" %>
 NAME=unicorn_<%= @application %>
 DESC=unicorn_<%= @application %>
