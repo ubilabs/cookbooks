@@ -35,4 +35,8 @@ after_fork do |server, worker|
   # the following is *required* for Rails + "preload_app true",
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
+
+  if Rails.cache.is_a?(ActiveSupport::Cache::MemCacheStore)
+    Rails.cache.instance_variable_get(:@data).reset
+  end
 end
