@@ -10,7 +10,7 @@ pid "<%= @path %>/shared/pids/unicorn_<%= @application %>.pid"
 stderr_path "<%= @path %>/shared/log/unicorn_<%= @application %>.stderr.log"
 stdout_path "<%= @path %>/shared/log/unicorn_<%= @application %>.stdout.log"
 
-preload_app false
+preload_app true
 
 GC.respond_to?(:copy_on_write_friendly=) and
   GC.copy_on_write_friendly = true
