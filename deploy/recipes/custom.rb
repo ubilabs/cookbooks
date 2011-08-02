@@ -42,7 +42,7 @@ node[:deploy].each do |application, deploy|
     mode "0644"
     variables(:application => application, :path => deploy[:deploy_to])
 
-    notifies :reload, resources(:service => "unicorn_#{application}")
+    notifies :restart, resources(:service => "unicorn_#{application}")
   end
 
   template "/etc/monit/conf.d/unicorn_#{application}.monitrc" do
