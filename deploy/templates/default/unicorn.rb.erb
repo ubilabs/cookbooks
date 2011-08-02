@@ -24,7 +24,9 @@ before_fork do |server, worker|
     begin
       sig = (worker.nr + 1) >= server.worker_processes ? :QUIT : :TTOU
       Process.kill(sig, File.read(old_pid).to_i)
+      puts "#{old_pid} killed"
     rescue Errno::ENOENT, Errno::ESRCH
+      puts "Old master alerady dead"
     end
   end
   #throttle forking
