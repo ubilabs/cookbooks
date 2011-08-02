@@ -8,11 +8,8 @@ APP_ROOT=<%= @current_path %>
 PID=<%= @app_path %>/shared/pids/unicorn_<%= @application %>.pid
 <% options = "#{@app_path}/shared/config/unicorn.rb -E #{@rails_env} -D" %>
 CMD="bundle exec unicorn -c <%= options %>"
-INIT_CONF=$APP_ROOT/config/init.conf
 action="$1"
 set -u
-
-test -f "$INIT_CONF" && . $INIT_CONF
 
 old_pid="$PID.oldbin"
 
@@ -54,7 +51,6 @@ upgrade)
         printf '.' && sleep 1 && n=$(( $n - 1 ))
       done
       echo
-
       if test $n -lt 0 && test -s $old_pid
       then
         echo >&2 "$old_pid still exists after $TIMEOUT seconds"
