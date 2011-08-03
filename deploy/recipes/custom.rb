@@ -49,6 +49,10 @@ node[:deploy].each do |application, deploy|
     variables(:application => application, :path => deploy[:deploy_to])
   end
 
+  service "unicorn_#{application}" do
+    action :start
+  end
+
   template "#{node[:nginx][:dir]}/sites-available/#{application}" do
     source "site.erb"
     cookbook "nginx"
