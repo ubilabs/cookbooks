@@ -43,7 +43,7 @@ reload)
     $CMD
     ;;
 restart)
-    sig USR2 && sleep 5 && oldsig QUIT && echo "Killing old master" `cat $OLD_PID` && exit 0
+    sig USR2 && sleep 5 && oldsig QUIT && echo "Killing old master" `cat $old_pid` && exit 0
     echo >&2 "Couldn't reload, starting '$CMD' instead"
     $CMD
     ;;
