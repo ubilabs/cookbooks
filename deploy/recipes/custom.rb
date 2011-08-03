@@ -8,10 +8,6 @@ include_recipe "unicorn"
 
 node[:deploy].each do |application, deploy|
 
-  service "unicorn_#{application}" do
-    action :start
-  end
-
   Chef::Log.debug(application.inspect)
   Chef::Log.debug(deploy.inspect)
 
