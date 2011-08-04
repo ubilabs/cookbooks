@@ -2,7 +2,7 @@
 worker_processes <%= unicorn_worker %>
 
 <% unicorn_worker.times do |worker| %>
-  listen "/tmp/unicorn_<%= @application %>.<%= worker %>.sock"
+  listen "/tmp/unicorn.<%= worker %>.sock"
   listen "127.0.0.1:<%= node[:unicorn][:base_port] + worker %>"
 <% end %>
 
