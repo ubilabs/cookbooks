@@ -44,7 +44,7 @@ reload)
     ;;
 restart)
     sig USR2 && sleep 5 && oldsig QUIT && echo "Killing old master" `cat $old_pid` && exit 0
-    echo >&2 "Couldn't reload, starting '$CMD' instead"
+    echo >&2 "Couldn't restart, starting '$CMD' instead"
     $CMD
     ;;
 reopen-logs)
