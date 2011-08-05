@@ -20,7 +20,7 @@ safe do
     user "<%= node[:backup][:database_user] %>"
     password "<%= node[:mysql][:server_root_password] %>"
 
-    database <%= node[:backup][:database].to_sym %>
+    database "<%= node[:backup][:database].to_s %>"
   end
 
 
