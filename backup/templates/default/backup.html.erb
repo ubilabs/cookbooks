@@ -1,27 +1,36 @@
-safe do
+Backup::Model.new(<%= node[:backup][:database].to_sym %>, 'Backup') do
 
-  local :path => "/backup/:kind/:id"
-
-  s3 do
-    key "<%= node[:backup][:amazon][:access_key] %>"
-    secret "<%= node[:backup][:amazon][:secret_access_key] %>"
-    bucket "<%= node[:backup][:amazon][:bucket] %>"
-    path ":kind/:id"
+  ##
+  # MySQL [Database]
+  #
+  database MySQL do |db|
+    db.name               = "<%= node[:backup][:database].to_s %>"
+    db.username           = "<%= node[:backup][:database_user] %>"
+    db.password           = "<%= node[:mysql][:server_root_password] %>"
+    db.host               = "localhost"
+    db.port               = 3306
+    db.additional_options = ['--quick', '--single-transaction']
   end
 
-  keep do
-    local 20
-    s3 <%= node[:backup][:keep_backups] %>
+
+  ##
+  # Amazon Simple Storage Service [Storage]
+  #
+  store_with S3 do |s3|
+    s3.access_key_id      = '<%= node[:backup][:amazon][:access_key] %>'
+    s3.secret_access_key  = '<%= node[:backup][:amazon][:secret_access_key] %>'
+    s3.bucket             = '<%= node[:backup][:amazon][:bucket] %>'
+    s3.path               = '/backup/mysql/<%= Time.now.to_i %>'
+    s3.keep               = <%= node[:backup][:keep_backups].to_i %>
   end
 
-  mysqldump do
-    options "-ceKq --single-transaction --create-options"
 
-    user "<%= node[:backup][:database_user] %>"
-    password "<%= node[:mysql][:server_root_password] %>"
-
-    database "<%= node[:backup][:database].to_s %>"
+  ##
+  # Gzip [Compressor]
+  #
+  compress_with Gzip do |compression|
+    compression.best = true
+    compression.fast = false
   end
-
 
 end
