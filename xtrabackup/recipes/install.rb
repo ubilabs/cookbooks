@@ -1,3 +1,7 @@
+package "libaio1" do
+  action :install
+end
+
 remote_file "/tmp/#{node[:xtrabackup][:deb]}" do
   source "http://www.percona.com/downloads/XtraBackup/xtrabackup-1.6.2/deb/lucid/i686/#{node[:xtrabackup][:deb]}"
 end
