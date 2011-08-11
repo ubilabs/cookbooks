@@ -1,0 +1,28 @@
+#!/usr/local/bin/ruby
+
+BACKUP_DIR = "<%= node[:xtrabackup][:target_dir] %>"
+KEEP_MAX = <%= node[:xtrabackup][:keep] %>
+
+
+def backup
+  now = Time.now.strftime("%Y_%m_%d_%H_%M_%S")
+  puts "Creating a new backup in #{BACKUP_DIR}/#{now}"
+  `mkdir -p #{BACKUP_DIR}/#{now}`
+  `/usr/bin/xtrabackup --backup --target-dir=#{BACKUP_DIR}/#{now}`
+end
+
+def cleanup_old
+  puts "Cleaning old backups in #{BACKUP_DIR}"
+  found_backups = Dir.glob("#{BACKUP_DIR}/*").sort.reverse
+  if found_backups.size > KEEP_MAX
+    found_backups[KEEP_MAX, 9999999].each do |backup|
+      puts "Deleting old backup #{backup}"
+      `rm -rf #{backup}`
+    end
+  else
+    puts "Keep all backups - #{found_backups.size}/#{KEEP_MAX}"
+  end
+end
+
+backup
+cleanup_old
