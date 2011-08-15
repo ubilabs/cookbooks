@@ -20,7 +20,7 @@ Backup::Model.new(:<%= node[:backup][:database].to_sym %>, 'Backup') do
     s3.access_key_id      = '<%= node[:backup][:amazon][:access_key] %>'
     s3.secret_access_key  = '<%= node[:backup][:amazon][:secret_access_key] %>'
     s3.bucket             = '<%= node[:backup][:amazon][:bucket] %>'
-    s3.path               = '/<%= Time.now.to_i %>'
+    s3.path               = '/backups'
     s3.keep               = <%= node[:backup][:keep_backups].to_i %>
   end
 
