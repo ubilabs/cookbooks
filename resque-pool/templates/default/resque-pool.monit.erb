@@ -1,0 +1,5 @@
+check process resque-pool_<%= @application %>
+  with pidfile "<%= @current_path %>/tmp/pids/resque-pool.pid"
+  start program = "/bin/su -c '/etc/init.d/resque-pool_<%= @application %> start' - deploy" with timeout 120 seconds
+  stop program = "/bin/su -c '/etc/init.d/resque-pool_<%= @application %> stop' - deploy"
+  if 5 restarts within 5 cycles then timeout

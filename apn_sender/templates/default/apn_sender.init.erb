@@ -1,0 +1,47 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          apn_sender
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts apn_sender for <%= @application %>
+# Description:       starts apn_sender for <%= @application %>
+### END INIT INFO
+
+export SL_NAME=apn_sender_rails
+NAME=apn_sender_<%= @application %>
+DESC=apn_sender_<%= @application %>
+CMD=<%= @current_path %>/script/apn_sender
+
+cd <%= @current_path %>
+
+case "$1" in
+  start)
+    echo -n "Starting $DESC: "
+    RAILS_ENV=<%= @rails_env %> $CMD start --environment=<%= @rails_env %>
+    echo "$NAME."
+    ;;
+  stop)
+    echo -n "Stopping $DESC: "
+    $CMD stop
+    echo "$NAME."
+    ;;
+  restart)
+    echo -n "Restarting $DESC: "
+    RAILS_ENV=<%= @rails_env %> $CMD restart --environment=<%= @rails_env %>
+    echo "$NAME."
+    ;;
+  reload)
+    echo -n "Reloading $DESC configuration: "
+    RAILS_ENV=<%= @rails_env %> $CMD restart --environment=<%= @rails_env %>
+    echo "$NAME."
+    ;;
+  *)
+    echo "Usage: $NAME {start|stop|restart|reload}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

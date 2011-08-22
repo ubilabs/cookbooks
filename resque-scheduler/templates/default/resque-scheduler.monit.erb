@@ -1,0 +1,5 @@
+check process resque-scheduler_<%= @application %>
+  with pidfile "<%= @current_path %>/tmp/pids/resque-scheduler.pid"
+  start program = "/bin/su -c '/etc/init.d/resque-scheduler_<%= @application %> start' - deploy" with timeout 120 seconds
+  stop program = "/bin/su -c '/etc/init.d/resque-scheduler_<%= @application %> stop' - deploy"
+  if 5 restarts within 5 cycles then timeout
