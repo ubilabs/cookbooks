@@ -1,5 +1,6 @@
 # install the gems for backup
 gem_package "fog" do
+  version "0.7.2"
   action :install
 end
 
@@ -19,5 +20,5 @@ end
 cron "backup db to s3" do
   hour node[:backup][:cron][:hour].to_s
   minute node[:backup][:cron][:minute].to_s
-  command "backup perform --trigger #{node[:backup][:database]} --config_file '#{node[:backup][:config_file]}'"
+  command "/usr/local/bin/backup perform --trigger #{node[:backup][:database]} --config_file '#{node[:backup][:config_file]}'"
 end
