@@ -1,5 +1,3 @@
-include_recipe "deploy" # get the deployment attributes
-
 remote_file "/tmp/redis-#{node[:redis][:version]}.tar.gz" do
   source "http://redis.googlecode.com/files/redis-#{node[:redis][:version]}.tar.gz"
 end
