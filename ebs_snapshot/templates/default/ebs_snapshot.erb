@@ -1,0 +1,18 @@
+#! /usr/local/bin/ruby
+
+require 'aws'
+
+ec2 = AWS::EC2.new(:access_key_id => "<%= @access_key_id %>", :secret_access_key => "<%= @secret_access_key %>", :ec2_endpoint => "ec2.<%= @region %>.amazonaws.com")
+
+instance = ec2.instances.select { |i| i.id == "<%= @instance_id %>" }.first
+device_key = instance.block_device_mappings.keys.first
+volume_id = instance.block_device_mappings[device_key].volume.id
+
+system "ec2-consistent-snapshot --mysql --mysql-username root --mysql-password <%= @mysql_root_password %> --region <%= @region %> #{volume_id} --description <%= @application %> --aws-access-key-id <%= @access_key_id %> --aws-secret-access-key <%= @secret_access_key %>"
+
+snapshots = ec2.snapshots.with_owner(instance.owner_id).to_a
+snapshots = snapshots.reject { |s| s.description != "<%= @application %>" }
+snapshots.sort! { |s1, s2| s1.start_time > s2.start_time ? -1 : 1 }
+while snapshots.length > <%= @num_snapshots_to_keep %>
+  snapshots.pop.delete
+end
