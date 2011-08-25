@@ -66,7 +66,10 @@ node[:deploy].each do |application, deploy|
     action :delete
   end
 
-  nginx_web_app application
+  nginx_web_app application do
+    application deploy
+    cookbook "nginx"
+  end
 
 
   bash "compress the assets" do
