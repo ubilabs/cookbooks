@@ -16,7 +16,7 @@ package "libxslt1-dev"
 package "autoconf"
 
 bash "install rvm" do
-  user "root"
+  user node[:rvm][:user]
   code <<-EOH
     bash < <(curl -s https://rvm.beginrescueend.com/install/rvm)
     [[ -s "#{node[:rvm][:install_dir]}/scripts/rvm" ]] && source "#{node[:rvm][:install_dir]}/scripts/rvm"
