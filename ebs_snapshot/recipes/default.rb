@@ -1,5 +1,11 @@
+# SIC!
+gem_package "net-ssh" do
+  action :install
+  options "--no-rdoc --no-ri -v 2.1.4"
+end
 gem_package "fog" do
   action :install
+  options "--no-rdoc --no-ri -v 0.11.0"
 end
 
 bash "install `ec2-consistent-snapshot`" do
