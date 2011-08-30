@@ -1,4 +1,4 @@
-gem_package "aws-sdk" do
+gem_package "fog" do
   action :install
 end
 
