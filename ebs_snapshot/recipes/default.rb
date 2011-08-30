@@ -17,9 +17,9 @@ node[:deploy].each do |application, deploy|
       :instance_id => node[:scalarium][:instance][:aws_instance_id],
       :mysql_root_password => node[:mysql][:server_root_password],
       :num_snapshots_to_keep => node[:ebs_snapshot][:num_snapshots_to_keep],
-      :access_key_id => node[:ebs_snapshot][:amazon][:access_key_id],
-      :secret_access_key => node[:ebs_snapshot][:amazon][:secret_access_key],
-      :region => node[:ebs_snapshot][:amazon][:region])
+      :access_key_id => node[:amazon][:access_key_id],
+      :secret_access_key => node[:amazon][:secret_access_key],
+      :region => node[:amazon][:region])
   end
 end
 
