@@ -37,12 +37,4 @@ http {
 
   include <%= node[:nginx][:dir] %>/conf.d/*.conf;
   include <%= node[:nginx][:dir] %>/sites-enabled/*;
-
-  upstream unicorn {
-    <% unicorn_worker = %x{grep -c processor /proc/cpuinfo}.strip.to_i * 2 %>
-    <% unicorn_worker.times do |worker| %>
-      server unix:/tmp/unicorn.<%= worker -%>.sock;
-      server 127.0.0.1:<%= 4000 + worker -%>;
-    <% end %>
-  }
 }
