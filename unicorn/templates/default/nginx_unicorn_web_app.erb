@@ -11,6 +11,12 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
+  location ^~ /assets/ {
+    if (-f $request_filename) {
+      expires max;
+    }
+  }
+
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -23,10 +29,6 @@ server {
 
   location @unicorn {
     proxy_pass http://unicorn_<%= @application[:domains].first %>;
-  }
-
-  location ~ ^\/assets\/ {
-    expires max;
   }
 
   error_page 500 502 503 504 /500.html;
@@ -52,6 +54,12 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
+  location ^~ /assets/ {
+    if (-f $request_filename) {
+      expires max;
+    }
+  }
+
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -64,10 +72,6 @@ server {
 
   location @unicorn {
     proxy_pass http://unicorn_<%= @application[:domains].first %>;
-  }
-
-  location ~ ^\/assets\/ {
-    expires max;
   }
 
   error_page 500 502 503 504 /500.html;
