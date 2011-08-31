@@ -18,15 +18,15 @@ server {
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
-    if (!-f $request_filename) {
-      proxy_pass http://unicorn_<%= @application[:domains].first %>;
-      break;
-    }
+    try_files $uri $uri/ @unicorn;
+  }
+
+  location @unicorn {
+    proxy_pass http://unicorn_<%= @application[:domains].first %>;
   }
 
   location ~ ^\/assets\/ {
     expires max;
-    break;
   }
 
   error_page 500 502 503 504 /500.html;
@@ -59,13 +59,14 @@ server {
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
-    if (!-f $request_filename) {
-      proxy_pass http://unicorn_<%= @application[:domains].first %>;
-      break;
-    }
+    try_files $uri $uri/ @unicorn;
   }
 
-  location ~ ^/assets/ {
+  location @unicorn {
+    proxy_pass http://unicorn_<%= @application[:domains].first %>;
+  }
+
+  location ~ ^\/assets\/ {
     expires max;
   }
 
