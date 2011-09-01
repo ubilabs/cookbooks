@@ -24,7 +24,10 @@ server {
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
-    try_files $uri $uri/ @unicorn;
+    if (!-f $request_filename) {
+      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      break;
+    }
   }
 
   location @unicorn {
