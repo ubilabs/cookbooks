@@ -9,10 +9,8 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
-  location ^~ /assets/ {
-    if (-f $request_filename) {
-      expires max;
-    }
+  location ~ ^/assets/ {
+    expires max;
   }
 
   location / {
