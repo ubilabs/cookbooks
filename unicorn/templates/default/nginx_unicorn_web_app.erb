@@ -28,10 +28,6 @@ server {
     }
   }
 
-  location @unicorn {
-    proxy_pass http://unicorn_<%= @application[:domains].first %>;
-  }
-
   error_page 500 502 503 504 /500.html;
   location = /500.html {
     root <%= @application[:absolute_document_root] %>;
@@ -53,10 +49,8 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
-  location ^~ /assets/ {
-    if (-f $request_filename) {
-      expires max;
-    }
+  location ~ ^/assets/ {
+    expires max;
   }
 
   location / {
@@ -70,10 +64,6 @@ server {
       proxy_pass http://unicorn_<%= @application[:domains].first %>;
       break;
     }
-  }
-
-  location @unicorn {
-    proxy_pass http://unicorn_<%= @application[:domains].first %>;
   }
 
   error_page 500 502 503 504 /500.html;
