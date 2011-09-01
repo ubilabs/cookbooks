@@ -51,8 +51,6 @@ server {
   ssl_client_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.ca;
   <% end -%>
 
-  keepalive_timeout 5;
-
   root <%= @application[:absolute_document_root] %>;
 
   location ^~ /assets/ {
@@ -68,7 +66,10 @@ server {
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
-    try_files $uri $uri/ @unicorn;
+    if (!-f $request_filename) {
+      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      break;
+    }
   }
 
   location @unicorn {
