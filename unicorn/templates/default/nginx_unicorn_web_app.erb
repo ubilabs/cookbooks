@@ -9,14 +9,14 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
-  location ~ ^/assets/ {
-    expires max;
-  }
-
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+
+    if ($uri ~ "^/assets/") {
+      add_header Expires "Thu, 31 December 2037 23:59:59 GMT";
+    }
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
@@ -47,14 +47,14 @@ server {
 
   root <%= @application[:absolute_document_root] %>;
 
-  location ~ ^/assets/ {
-    expires max;
-  }
-
   location / {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+
+    if ($uri ~ "^/assets/") {
+      add_header Expires "Thu, 31 December 2037 23:59:59 GMT";
+    }
 
     # If you don't find the filename in the static files
     # Then request it from the unicorn server
