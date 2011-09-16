@@ -5,7 +5,9 @@ upstream unicorn_<%= @application[:domains].first %> {
 server {
   listen 80;
   server_name <%= @application[:domains].join(" ") %> <%= node[:hostname] %>;
+  <% if node[:nginx][:rewrite_http_to_https] -%>
   rewrite ^(.*) https://$server_name$1 permanent;
+  <% end -%>
   access_log <%= node[:nginx][:log_dir] %>/<%= @application[:domains].first %>.access.log;
 
   root <%= @application[:absolute_document_root] %>;
