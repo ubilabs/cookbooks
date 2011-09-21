@@ -18,13 +18,4 @@ node[:deploy].each do |application, deploy|
     variables(:host => redis_host)
   end
 
-  bash "symlink redis config" do
-    code <<-EOH
-      ln -s -f #{deploy[:deploy_to]}/shared/config/redis.yml #{deploy[:deploy_to]}/current/config/redis.yml
-    EOH
-    only_if do
-      File.directory?("#{deploy[:deploy_to]}/current")
-    end
-  end
-
 end
