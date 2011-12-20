@@ -10,14 +10,12 @@ node[:deploy].each do |application, deploy|
     end
   redis_host = "#{redis_server_ip}:#{node[:redis][:port]}"
 
-  template "#{deploy[:deploy_to]}/current/config/redis.yml" do
+  template "#{deploy[:deploy_to]}/shared/config/redis.yml" do
     source "redis.yml.erb"
     mode "0660"
     owner deploy[:user]
     group deploy[:group]
     variables(:host => redis_host)
-    only_if do
-      File.directory?("#{deploy[:deploy_to]}/current")
-    end
   end
+
 end
