@@ -1,6 +1,6 @@
 check process delayed_job with pidfile <%= @deploy[:deploy_to] %>/current/tmp/pids/delayed_job.pid
-  start program = "cd <%= @deploy[:deploy_to] %>/current && RAILS_ENV=<%= @deploy[:rails_env] %> bundle exec script/delayed_job start" as uid ubuntu and gid ubuntu
-  stop program = "cd <%= @deploy[:deploy_to] %>/current && RAILS_ENV=<%= @deploy[:rails_env] %> bundle exec script/delayed_job stop" as uid ubuntu and gid ubuntu
+  start program = "RAILS_ENV=<%= @deploy[:rails_env] %> <%= @deploy[:deploy_to] %>/current/script/delayed_job start" as uid ubuntu and gid ubuntu
+  stop program = "RAILS_ENV=<%= @deploy[:rails_env] %> <%= @deploy[:deploy_to] %>/current/script/delayed_job stop" as uid ubuntu and gid ubuntu
   if mem is greater than 300.0 MB for 1 cycles then restart
   if cpu is greater than 50% for 2 cycles then alert
   if cpu is greater than 80% for 3 cycles then restart
