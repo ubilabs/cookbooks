@@ -4,12 +4,12 @@ settings = Chef::DataBagItem.load('elasticsearch', 'settings') rescue {}
 
 # === VERSION ===
 #
-default.elasticsearch[:version]   = "0.19.0"
+default.elasticsearch[:version]   = "0.19.1"
 
 # === PATHS ===
 #
 default.elasticsearch[:dir]       = "/usr/local"
-default.elasticsearch[:user]      = "elasticsearch"
+default.elasticsearch[:user]      = "deploy"
 default.elasticsearch[:conf_path] = "/usr/local/etc/elasticsearch"
 default.elasticsearch[:data_path] = "/usr/local/var/data/elasticsearch"
 default.elasticsearch[:log_path]  = "/usr/local/var/log/elasticsearch"
