@@ -1,6 +1,6 @@
 # install the gems for backup
 gem_package "fog" do
-  version "0.7.2"
+  version "1.3.1"
   action :install
 end
 
