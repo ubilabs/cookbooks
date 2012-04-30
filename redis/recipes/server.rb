@@ -16,13 +16,14 @@ user "redis" do
 end
 
 directory node[:redis][:datadir] do
+  recursive true
   owner node[:redis][:user]
   group 'users'
   mode '0755'
 end
 
 directory File.dirname(node[:redis][:log_file]) do
-  action :create
+  recursive true
   owner node[:redis][:user]
   group 'root'
   mode '0755'
@@ -71,3 +72,5 @@ end
 execute "monit reload" do
   action :run
 end
+
+include_recipe 'redis::compact'
