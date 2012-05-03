@@ -1,4 +1,5 @@
 node[:deploy].each do |application, deploy|
+  next unless deploy[:application_type] == "rails"
 
   template "/etc/init.d/resque-pool_#{application}" do
     source "resque-pool.init.erb"
@@ -30,5 +31,4 @@ node[:deploy].each do |application, deploy|
     supports :start => true, :reload => true, :stop => true, :restart => true
     action [:enable, :start]
   end
-
 end

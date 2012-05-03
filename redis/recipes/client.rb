@@ -1,6 +1,5 @@
-include_recipe "deploy" # get the deployment attributes
-
 node[:deploy].each do |application, deploy|
+  next unless deploy[:application_type] == "rails"
 
   redis_server = node[:scalarium][:roles]['db-master'][:instances].keys.first
   redis_server_ip = if redis_server
@@ -18,5 +17,4 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     variables(:host => redis_host)
   end
-
 end
