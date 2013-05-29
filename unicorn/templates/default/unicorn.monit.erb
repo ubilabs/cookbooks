@@ -1,4 +1,0 @@
-check process unicorn_<%= @application %>
-  with pidfile "<%= @deploy[:deploy_to] %>/shared/pids/unicorn.pid"
-  start program = "/bin/su -c '<%= @deploy[:deploy_to] %>/shared/scripts/unicorn start' - deploy" with timeout 120 seconds
-  stop program = "/bin/su -c '<%= @deploy[:deploy_to] %>/shared/scripts/unicorn stop' - deploy"
