@@ -1,9 +1,9 @@
 #
 # Author:: Marius Ducea (marius@promethost.com)
 # Cookbook Name:: nodejs
-# Recipe:: default
+# Recipe:: npm
 #
-# Copyright 2010, Promet Solutions
+# Copyright 2010-2012, Promet Solutions
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,25 +18,21 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
+include_recipe "nodejs"
 
-case node[:platform]
-  when "centos","redhat","fedora"
-    package "openssl-devel"
-  when "debian","ubuntu"
-    package "libssl-dev"
-end
+package "curl"
 
-bash "install nodejs from source" do
+npm_src_url = "http://registry.npmjs.org/npm/-/npm-#{node['nodejs']['npm']}.tgz"
+
+bash "install npm - package manager for node" do
   cwd "/usr/local/src"
   user "root"
   code <<-EOH
-    wget http://nodejs.org/dist/node-v#{node[:nodejs][:version]}.tar.gz && \
-    tar zxf node-v#{node[:nodejs][:version]}.tar.gz && \
-    cd node-v#{node[:nodejs][:version]} && \
-    ./configure --prefix=#{node[:nodejs][:dir]} && \
-    make && \
-    make install
+    mkdir -p npm-v#{node['nodejs']['npm']} && \
+    cd npm-v#{node['nodejs']['npm']}
+    curl -L #{npm_src_url} | tar xzf - --strip-components=1 && \
+    make uninstall dev
   EOH
-  not_if "#{node[:nodejs][:dir]}/bin/node -v 2>&1 | grep 'v#{node[:nodejs][:version]}'"
+  not_if "#{node['nodejs']['dir']}/bin/npm -v 2>&1 | grep '#{node['nodejs']['npm']}'"
 end
+
