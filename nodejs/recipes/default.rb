@@ -3,7 +3,7 @@
 # Cookbook Name:: nodejs
 # Recipe:: default
 #
-# Copyright 2010-2012, Promet Solutions
+# Copyright 2010, Promet Solutions
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,9 +17,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#case node['platform_family']
-  #when "debian"
-   #include_recipe "apt"
-#end
 
-include_recipe "nodejs::install_from_#{node['nodejs']['install_method']}"
+include_recipe "build-essential"
+
+case node[:platform]
+  when "centos","redhat","fedora"
+    package "openssl-devel"
+  when "debian","ubuntu"
+    package "libssl-dev"
+end
+
+bash "install nodejs from source" do
+  cwd "/usr/local/src"
+  user "root"
+  code <<-EOH
+    wget http://nodejs.org/dist/#{node[:nodejs][:version]}/node-v#{node[:nodejs][:version]}.tar.gz && \
+    tar zxf node-v#{node[:nodejs][:version]}.tar.gz && \
+    cd node-v#{node[:nodejs][:version]} && \
+    ./configure --prefix=#{node[:nodejs][:dir]} && \
+    make && \
+    make install
+  EOH
+  not_if "#{node[:nodejs][:dir]}/bin/node -v 2>&1 | grep 'v#{node[:nodejs][:version]}'"
+end
