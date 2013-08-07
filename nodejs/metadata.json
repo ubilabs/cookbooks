@@ -12,7 +12,8 @@
   },
   "recipes": {
     "nodejs::npm": "Installs npm - a package manager for node",
-    "nodejs": "Installs Node.JS from source"
+    "nodejs": "Installs Node.JS from source",
+    "nodejs::package": "Installs nodejs and npm from package manager"
   },
   "suggestions": {
   },
